@@ -1,4 +1,4 @@
-namespace Temp
+namespace NukeCdkCICDExampleCdk
 {
     public class CreateCodePipelineRequest
     {

@@ -1,0 +1,4 @@
+{
+  "$schema": "./build.schema.json",
+  "Solution": "src/Nuke_Cdk_CICD_Example.sln"
+}

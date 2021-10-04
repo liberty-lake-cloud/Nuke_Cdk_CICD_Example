@@ -8,7 +8,7 @@ using Amazon.CDK.AWS.S3;
 using Amazon.JSII.Runtime.Deputy;
 using IStageProps = Amazon.CDK.AWS.CodePipeline.IStageProps;
 
-namespace Temp
+namespace NukeCdkCICDExampleCdk
 {
     public class NukeCdkCICDExampleCodePipeline: Construct
     {
@@ -51,7 +51,7 @@ namespace Temp
                         {
                             ["commands"] = $"nuke DeployNukeCdkCICDExampleCdkStack " +
                                                 $"--awsregion {createCodePipelineRequest.AwsRegion} " +
-                                                $"--apigitbranchname {createCodePipelineRequest.GitBranchName} " +
+                                                $"--gitbranchname {createCodePipelineRequest.GitBranchName} " +
                                                 $"--awsaccount {createCodePipelineRequest.AwsAccount} "
                         }
                     }
@@ -80,7 +80,7 @@ namespace Temp
             
             var githubToken = SecretValue.SecretsManager("Github_Token");
 
-            Pipeline backendPipeline = new Pipeline(this, "NukeCdkCICDExample Pipeline", new PipelineProps
+            Pipeline pipeline = new Pipeline(this, "NukeCdkCICDExample Pipeline", new PipelineProps
             {
                 ArtifactBucket = codeBuildBucket,
                 Stages = new IStageProps[]{new StageOptions
@@ -91,7 +91,7 @@ namespace Temp
                             ActionName = "Github_Source",
                             OauthToken = githubToken,
                             Owner = "liberty-lake-cloud",
-                            Repo = "VegaAdvancedSecurity",
+                            Repo = "Nuke_Cdk_CICD_Example",
                             Branch = createCodePipelineRequest.GitBranchName,
                             Output = sourceOutput,
                             Trigger = GitHubTrigger.WEBHOOK
@@ -102,7 +102,7 @@ namespace Temp
                         StageName = "Build",
                         Actions = new IAction[]{ new CodeBuildAction(new CodeBuildActionProps
                         {
-                            ActionName = "Vega_Advanced_Security_Build",
+                            ActionName = "NukeCdkCICDExample_Build",
                             Project = project,
                             Input = sourceOutput,
                         })}
